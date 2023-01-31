@@ -26,3 +26,12 @@ Both `transformers` and `datasets` cache downloaded data and models, and can qui
 HF_HOME=/data/users/<username>/.cache/huggingface
 TRANSFORMERS_CACHE=/data/users/<username>/.cache/huggingface
 ```
+
+## Pre-Processing
+
+Now let's assume we want to apply some transformations before we consider using this dataset. We'll do the following:
+
+1. lower-case all input texts and replace new-lines with spaces (see [map](https://huggingface.co/docs/datasets/v2.9.0/en/package_reference/main_classes#datasets.Dataset.map))
+2. remove training points labelled as part of the `misc` group in the **training data** (e.g. for zero-shot transfer)
+
+We do this in [`./pre_process_example.py`](./pre_process_example.py)

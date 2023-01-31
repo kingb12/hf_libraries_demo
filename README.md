@@ -28,4 +28,7 @@ different modules in `src`. You can also install it from the git link directly. 
 [in Colab here](./ImportingAGithubPyPackage.ipynb).
 
 ## Using Huggingface Datasets
-- Loading a dataset from Huggingface
+
+[See this directory of examples](./src/hf_libraries_demo/datasets)
+- Loading a dataset from Huggingface ([official tutorial](https://huggingface.co/docs/datasets/load_hub)) ([example](/src/hf_libraries_demo/datasets/load_dataset_example.py))
+- Using `map` and `filter` for pre-processing ([official tutorial](https://huggingface.co/docs/datasets/use_dataset)) ([example](/src/hf_libraries_demo/datasets/pre_process_example.py))
