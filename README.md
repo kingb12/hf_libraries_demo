@@ -21,9 +21,11 @@ contents.
 on the `src` layout and alternatives, see this 
 [article](https://setuptools.pypa.io/en/latest/userguide/declarative_config.html#using-a-src-layout).
 
-Given this, you can install an editable version of your package with `pip install -e .` from its root directory, and
-import functions you've defined in different modules in `src`. You can also install it from the git link directly. See 
-an example of doing this [in Colab here](./ImportingAGithubPyPackage.ipynb).
+I've defined minimal example of a function to import in 
+[`src/hf_libraries_demo/package_demo`](src/hf_libraries_demo/package_demo). Given this, you can install an editable 
+version of the whole package with `pip install -e .` from its root directory, and import functions you've defined in 
+different modules in `src`. You can also install it from the git link directly. See an example of doing this 
+[in Colab here](./ImportingAGithubPyPackage.ipynb).
 
 ## Using Huggingface Datasets
 - Loading a dataset from Huggingface
