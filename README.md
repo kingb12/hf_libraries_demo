@@ -20,8 +20,10 @@ contents.
 `src/hf_libraries_demo` since my `package_dir` includes `=src`. You'll want to rename appropriately.
 
 Given this, you can install an editable version of your package with `pip install -e .` from its root directory, and
-import functions you've defined in different modules in `src`. You can also install it from the git link directly.
-See an example of doing this [in Colab here](./ImportingAGithubPyPackage.ipynb).
+import functions you've defined in different modules in `src`. For more details on the `src` layour and alternatives,
+see this [article](https://setuptools.pypa.io/en/latest/userguide/declarative_config.html#using-a-src-layout). You can
+also install it from the git link directly. See an example of doing this 
+[in Colab here](./ImportingAGithubPyPackage.ipynb).
 
 ## Using Huggingface Datasets
 - Loading a dataset from Huggingface
