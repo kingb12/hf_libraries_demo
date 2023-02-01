@@ -46,4 +46,5 @@ the model. To do this, we build pipelines for two model-free baselines and or te
 ([official eval tutorial](https://huggingface.co/docs/evaluate/v0.4.0/en/base_evaluator)) ([example](src/hf_libraries_demo/evaluation/simple_evaluation.py))
   - [random baseline "pipeline"](./src/hf_libraries_demo/pipelines/random_label_pipeline.py)
   - [perfect "pipeline"](./src/hf_libraries_demo/pipelines/perfect_pipeline.py)
+- calculating F1 as a custom metric ([example](src/hf_libraries_demo/evaluation/multi_metric_evaluation.py))
 
