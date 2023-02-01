@@ -51,3 +51,8 @@ the model. To do this, we build pipelines for two model-free baselines and or te
   - [perfect "pipeline"](./src/hf_libraries_demo/pipelines/perfect_pipeline.py)
 - calculating F1 as a custom metric ([example](src/hf_libraries_demo/evaluation/multi_metric_evaluation.py))
 
+## Fine-tuning a Model for our task! 
+
+We'll use a fairly small pre-trained model: 
+[`microsoft/xtremedistil-l6-h384-uncased`](https://huggingface.co/microsoft/xtremedistil-l6-h384-uncased).
+- instantiating the model and making zero-shot predictions manually ([example](./src/hf_libraries_demo/experiments/manual_inference.py))
