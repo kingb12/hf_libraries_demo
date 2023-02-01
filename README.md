@@ -3,6 +3,9 @@
 This repo collects code examples and demos used for demonstrating different aspects of the Huggingface libraries, 
 including transformers, datasets, evaluate, and (eventually) more.
 
+Be sure to check out Huggingface's [Course](https://huggingface.co/course/chapter1/1), for an in depth overview and 
+tutorial from HF.
+
 ### Preamble: Python packaging
 
 Not required for anything in this course, but I often personally find it useful to organize my work as a Python package. 
@@ -67,10 +70,10 @@ We'll use a fairly small pre-trained model:
 
 
 ## Not Covered (Yet)
-- You can use both a sparse (BM25) and dense (FAISS) index on a huggingface dataset to **retrieve data points**.
+- You can use both/either a sparse (BM25) and dense (FAISS) [Search index on a huggingface dataset](https://huggingface.co/docs/datasets/faiss_es) to **retrieve data points**.
   - great for retrieval-augmented generation or retrieval augmented in-context-learning
-- Huggingface Accelerate and Deepspeed integrations can vastly improve training speed and capacity
+- Huggingface [Accelerate](https://huggingface.co/docs/accelerate/index) and Deepspeed integrations can vastly improve training speed and capacity
 - Other methods and modalities:
-  - Transformers for vision and audio
-  - Diffusion Models
-  - Reinforcement Learning Environments and Reinforcement Learning from Human Feedback
+  - Transformers and Datasets for [vision](https://huggingface.co/docs/datasets/image_load) and [audio](https://huggingface.co/docs/datasets/audio_process)
+  - [Diffusion Models](https://huggingface.co/docs/diffusers/index)
+  - Reinforcement Learning Environments ([HF Simulate](https://huggingface.co/docs/simulate/index)) and [Reinforcement Learning from Human Feedback](https://huggingface.co/blog/rlhf)
