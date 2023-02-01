@@ -35,3 +35,12 @@ Now let's assume we want to apply some transformations before we consider using 
 2. remove training points labelled as part of the `misc` group in the **training data** (e.g. for zero-shot transfer)
 
 We do this in [`./pre_process_example.py`](./pre_process_example.py)
+
+## Aside: Data analysis
+
+Datasets aren't just useful for preparing data for modelling, you can also run analyses. 
+[data_analysis_example.py](./data_analysis_example.py) provides a quick example of plotting label counts (shown below), 
+which can be useful for understanding class balance. For example, here is the label counts of the training data, which 
+shows a mostly but not quite perfectly balanced training set among labels:
+
+![Training label counts](../../../plots/label_counts.png)

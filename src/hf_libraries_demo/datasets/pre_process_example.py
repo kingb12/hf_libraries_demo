@@ -22,10 +22,16 @@ def lowercase_text(item: DataPoint) -> DataPoint:
     # return item
 
 
-if __name__ == '__main__':
-
-    # loading the dataset will download if not present in your cache, or simply load from there
-    dataset: DatasetDict = load_dataset("SetFit/20_newsgroups")
+def pre_process_dataset(dataset: DatasetDict) -> DatasetDict:
+    """
+    Our complete pre-processing pipeline, returning the result as a new DatasetDict
+    
+    1. lower-case all input texts and replace new-lines with spaces
+    2. remove training points labelled as part of the `misc` group in the training data (e.g. for zero-shot transfer)
+    
+    :param dataset: un-processed dataset
+    :return: processed dataset
+    """
 
     # Calling map on a DatasetDict applies to all splits
     # datasets do not update in place, allowing you to have several versions. Means you must assign result
@@ -43,6 +49,16 @@ if __name__ == '__main__':
     # indicating whether the item should be kept
     is_not_misc: Callable[[DataPoint], bool] = lambda item: not item['label_text'].startswith("misc")
     dataset['train'] = dataset['train'].filter(is_not_misc, desc="removing misc items")
+    
+    return dataset
+
+
+if __name__ == '__main__':
+    # loading the dataset will download if not present in your cache, or simply load from there
+    dataset: DatasetDict = load_dataset("SetFit/20_newsgroups")
+
+    # see function above for details
+    dataset = pre_process_dataset(dataset)
 
     # notice the reduced size due to filter
     print(dataset)
