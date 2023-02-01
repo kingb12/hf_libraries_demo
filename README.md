@@ -51,7 +51,7 @@ the model. To do this, we build pipelines for two model-free baselines and or te
   - [perfect "pipeline"](./src/hf_libraries_demo/pipelines/perfect_pipeline.py)
 - calculating F1 as a custom metric ([example](src/hf_libraries_demo/evaluation/multi_metric_evaluation.py))
 
-## Fine-tuning a Model for our task! 
+## Fine-tuning a [Transformer](https://huggingface.co/docs/transformers) with the [Trainer API](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.Trainer)! 
 
 We'll use a fairly small pre-trained model: 
 [`microsoft/xtremedistil-l6-h384-uncased`](https://huggingface.co/microsoft/xtremedistil-l6-h384-uncased).
