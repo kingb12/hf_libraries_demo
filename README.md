@@ -61,3 +61,13 @@ We'll use a fairly small pre-trained model:
 ([official docs](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.Trainer)) 
 ([example](./src/hf_libraries_demo/experiments/finetune_w_trainer.py))
   - bonus: logging to [Weights & Biases](https://wandb.ai/kingb12/nlp244-hf-libraries-demo?workspace=user-kingb12)
+
+
+## Not Covered (Yet)
+- You can use both a sparse (BM25) and dense (FAISS) index on a huggingface dataset to **retrieve data points**.
+  - great for retrieval-augmented generation or retrieval augmented in-context-learning
+- Huggingface Accelerate and Deepspeed integrations can vastly improve training speed and capacity
+- Other methods and modalities:
+  - Transformers for vision and audio
+  - Diffusion Models
+  - Reinforcement Learning Environments and Reinforcement Learning from Human Feedback
