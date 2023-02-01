@@ -27,8 +27,23 @@ version of the whole package with `pip install -e .` from its root directory, an
 different modules in `src`. You can also install it from the git link directly. See an example of doing this 
 [in Colab here](./ImportingAGithubPyPackage.ipynb).
 
-## Using Huggingface Datasets
+## Using [Huggingface Datasets](https://huggingface.co/docs/datasets)
 
 [See this directory of examples](./src/hf_libraries_demo/datasets)
 - Loading a dataset from Huggingface ([official tutorial](https://huggingface.co/docs/datasets/load_hub)) ([example](/src/hf_libraries_demo/datasets/load_dataset_example.py))
 - Using `map` and `filter` for pre-processing ([official tutorial](https://huggingface.co/docs/datasets/use_dataset)) ([example](/src/hf_libraries_demo/datasets/pre_process_example.py))
+- Aside: pre-modeling data analysis with datasets ([example](./src/hf_libraries_demo/datasets/data_analysis_example.py))
+
+## Setting up Evaluation w/ [Huggingface Evaluate](https://huggingface.co/docs/evaluate)
+[Evaluation Overview](src/hf_libraries_demo/evaluation/README.md)
+Here we approach things in a round-about order: we set up evaluation for a model on our dataset without first defining 
+the model. To do this, we build pipelines for two model-free baselines and or test cases:
+
+1) A perfect model, in which we can verify expectations of our evaluation metrics
+2) A random baseline, which we can use to test the evaluator and compare results against
+
+- calculating accuracy for a random and a perfect model with evaluators 
+([official eval tutorial](https://huggingface.co/docs/evaluate/v0.4.0/en/base_evaluator)) ([example](src/hf_libraries_demo/evaluation/simple_evaluation.py))
+  - [random baseline "pipeline"](./src/hf_libraries_demo/pipelines/random_label_pipeline.py)
+  - [perfect "pipeline"](./src/hf_libraries_demo/pipelines/perfect_pipeline.py)
+
