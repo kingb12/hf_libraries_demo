@@ -61,6 +61,9 @@ We'll use a fairly small pre-trained model:
 ([official docs](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.Trainer)) 
 ([example](./src/hf_libraries_demo/experiments/finetune_w_trainer.py))
   - bonus: logging to [Weights & Biases](https://wandb.ai/kingb12/nlp244-hf-libraries-demo?workspace=user-kingb12)
+- Customizing Trainer via-subclass: compute an alternative loss function (label-smoothed cross entropy) 
+([official docs](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.Trainer)) 
+([example](./src/hf_libraries_demo/experiments/custom_finetune_w_trainer.py))
 
 
 ## Not Covered (Yet)
