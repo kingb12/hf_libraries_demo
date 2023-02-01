@@ -1,7 +1,7 @@
 # NLP 244 Section: Huggingface Library Demos
 
-This repo collects code examples and demos used for demonstrating different aspects of the Huggingface library set
-code 
+This repo collects code examples and demos used for demonstrating different aspects of the Huggingface libraries, 
+including transformers, datasets, evaluate, and (eventually) more.
 
 ### Preamble: Python packaging
 
