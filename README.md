@@ -30,12 +30,15 @@ different modules in `src`. You can also install it from the git link directly. 
 ## Using [Huggingface Datasets](https://huggingface.co/docs/datasets)
 
 [See this directory of examples](./src/hf_libraries_demo/datasets)
+
 - Loading a dataset from Huggingface ([official tutorial](https://huggingface.co/docs/datasets/load_hub)) ([example](/src/hf_libraries_demo/datasets/load_dataset_example.py))
 - Using `map` and `filter` for pre-processing ([official tutorial](https://huggingface.co/docs/datasets/use_dataset)) ([example](/src/hf_libraries_demo/datasets/pre_process_example.py))
 - Aside: pre-modeling data analysis with datasets ([example](./src/hf_libraries_demo/datasets/data_analysis_example.py))
 
 ## Setting up Evaluation w/ [Huggingface Evaluate](https://huggingface.co/docs/evaluate)
-[Evaluation Overview](src/hf_libraries_demo/evaluation/README.md)
+
+[See this directory of examples](src/hf_libraries_demo/evaluation/README.md)
+
 Here we approach things in a round-about order: we set up evaluation for a model on our dataset without first defining 
 the model. To do this, we build pipelines for two model-free baselines and or test cases:
 
