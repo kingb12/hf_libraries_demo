@@ -56,3 +56,4 @@ the model. To do this, we build pipelines for two model-free baselines and or te
 We'll use a fairly small pre-trained model: 
 [`microsoft/xtremedistil-l6-h384-uncased`](https://huggingface.co/microsoft/xtremedistil-l6-h384-uncased).
 - instantiating the model and making zero-shot predictions manually ([example](./src/hf_libraries_demo/experiments/manual_inference.py))
+- making zero-shot predictions with an evaluator ([example](./src/hf_libraries_demo/experiments/auto_inference.py))

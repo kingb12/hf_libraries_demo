@@ -42,13 +42,6 @@ if __name__ == '__main__':
 
     # you can also instantiate a metric yourself with evaluate.load:
     f1_metric: MyMacroF1Metric = MyMacroF1Metric()
-    # For F1, we need to define the averaging setting:
-    # - micro: compute positive and negative values globally (does not consider class balance)
-    # - macro: compute pos. and neg. per-class to get per-class F1. Then average these (re-balances classes))
-    # NOTE: a bug! evaluate is incomplete. Best I can tell, this hack is the only way to get the F1 metric to use an
-    # appropriate averaging scheme:
-    # https://github.com/huggingface/evaluate/blob/6abb0d53b82b1e5efea5d683b91d7990a653c78d/src/evaluate/evaluator/base.py#L527
-    # text_eval.METRIC_KWARGS = {**text_eval.METRIC_KWARGS, "average": "macro"}
     results = text_eval.compute(
         model_or_pipeline=perfect_model,
         data=dataset['test'],
