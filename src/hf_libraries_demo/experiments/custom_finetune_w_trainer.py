@@ -102,7 +102,7 @@ if __name__ == '__main__':
         dataloader_num_workers=0,  # set to 0 when debugging and >1 when running!
     )
 
-    wandb.init(entity="kingb12", project="nlp244-hf-libraries-demo", group="custom_finetune_w_trainer")
+    wandb.init(entity="kingb12", project="nlp244-hf-libraries-demo", group="custom_finetune_w_trainer", sync_tensorboard=True)
 
     trainer: LabelSmoothedTrainer = LabelSmoothedTrainer(
         model=model,
