@@ -57,3 +57,7 @@ We'll use a fairly small pre-trained model:
 [`microsoft/xtremedistil-l6-h384-uncased`](https://huggingface.co/microsoft/xtremedistil-l6-h384-uncased).
 - instantiating the model and making zero-shot predictions manually ([example](./src/hf_libraries_demo/experiments/manual_inference.py))
 - making zero-shot predictions with an evaluator ([example](./src/hf_libraries_demo/experiments/auto_inference.py))
+- fine-tuning with the Trainer API 
+([official docs](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.Trainer)) 
+([example](./src/hf_libraries_demo/experiments/finetune_w_trainer.py))
+  - bonus: logging to [Weights & Biases](https://wandb.ai/kingb12/nlp244-hf-libraries-demo?workspace=user-kingb12)

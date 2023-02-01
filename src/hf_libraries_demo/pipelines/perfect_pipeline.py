@@ -20,6 +20,7 @@ from typing import Dict
 from transformers import TextClassificationPipeline, AutoModelForSequenceClassification, AutoConfig
 from transformers.pipelines.base import GenericTensor
 
+
 class PerfectTextClassificationPipeline(TextClassificationPipeline):
 
     def __init__(self, **kwargs):

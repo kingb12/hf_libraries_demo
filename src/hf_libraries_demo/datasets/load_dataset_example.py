@@ -2,7 +2,6 @@ from pprint import pprint
 
 from datasets import load_dataset, DatasetDict, Dataset
 
-
 if __name__ == '__main__':
     # loading the dataset will download if not present in your cache, or simply load from there
     dataset: DatasetDict = load_dataset("SetFit/20_newsgroups")

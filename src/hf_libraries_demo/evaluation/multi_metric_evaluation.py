@@ -3,8 +3,8 @@ from typing import Dict, Any
 
 import evaluate
 from datasets import DatasetDict, load_dataset
-from evaluate import TextClassificationEvaluator, Metric, EvaluationModule, EvaluationModuleInfo
-from sklearn.metrics import fbeta_score, f1_score
+from evaluate import TextClassificationEvaluator, Metric, EvaluationModuleInfo
+from sklearn.metrics import f1_score
 
 from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
 from hf_libraries_demo.pipelines.perfect_pipeline import PerfectTextClassificationPipeline
