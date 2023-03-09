@@ -23,3 +23,12 @@ Many functions in Trainer can be controlled by
 [`TrainingArguments`](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.TrainingArguments). 
 However, sometimes we need to sub-class to add functionality. In 
 [`custom_finetune_w_trainer.py`](./custom_finetune_w_trainer.py) we demonstrate computing a custom label-smoothed loss by sub-classing Trainer.
+
+## Efficient Inference
+- a worked example of translating `snli` to French, using T5, as in Quest 4 ([en_snli_to_french.py](./src/hf_libraries_demo/experiments/en_snli_to_french.py))
+  - filtering to only the unique English strings for translation
+  - Adding task prefixes with worker parallelism (`num_proc=32`)
+  - Batch tokenization with `max_length=512`
+  - Using a `torch` `DataLoader` with batch size 512 and `num_workers=8`
+  - batch decoding and storing of results
+  - building a `french_snli` from our map of unique EN -> FR translations

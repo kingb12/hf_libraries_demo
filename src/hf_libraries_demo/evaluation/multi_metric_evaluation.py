@@ -6,7 +6,7 @@ from datasets import DatasetDict, load_dataset
 from evaluate import TextClassificationEvaluator, Metric, EvaluationModuleInfo
 from sklearn.metrics import f1_score
 
-from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
+from hf_libraries_demo.datasets_examples.pre_process_example import pre_process_dataset
 from hf_libraries_demo.pipelines.perfect_pipeline import PerfectTextClassificationPipeline
 
 

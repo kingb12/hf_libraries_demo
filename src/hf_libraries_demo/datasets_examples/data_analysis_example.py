@@ -6,7 +6,7 @@ import pandas as pd
 import seaborn as sns
 from datasets import DatasetDict, load_dataset
 
-from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
+from hf_libraries_demo.datasets_examples.pre_process_example import pre_process_dataset
 
 if __name__ == '__main__':
     # loading the dataset will download if not present in your cache, or simply load from there

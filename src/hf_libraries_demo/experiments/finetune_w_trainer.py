@@ -11,7 +11,7 @@ from torch import Tensor
 from transformers import AutoConfig, BertTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer, \
     EvalPrediction
 
-from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
+from hf_libraries_demo.datasets_examples.pre_process_example import pre_process_dataset
 from hf_libraries_demo.evaluation.multi_metric_evaluation import MyMacroF1Metric
 
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         report_to=["wandb"],
         logging_steps=50,
         num_train_epochs=20,
-        metric_for_best_model="accuracy",
+        metric_for_best_model="eval_f1",
         load_best_model_at_end=True,
         dataloader_num_workers=0,  # set to 0 when debugging and >1 when running!
     )

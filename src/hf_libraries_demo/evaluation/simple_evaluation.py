@@ -4,7 +4,7 @@ from typing import List
 from datasets import DatasetDict, load_dataset
 from evaluate import TextClassificationEvaluator
 
-from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
+from hf_libraries_demo.datasets_examples.pre_process_example import pre_process_dataset
 from hf_libraries_demo.pipelines.perfect_pipeline import PerfectTextClassificationPipeline
 from hf_libraries_demo.pipelines.random_label_pipeline import RandomLabelTextClassificationPipeline
 

@@ -5,7 +5,7 @@ from datasets import DatasetDict, load_dataset, Dataset
 from evaluate import TextClassificationEvaluator
 from transformers import AutoConfig, AutoModelForSequenceClassification, BertTokenizer
 
-from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
+from hf_libraries_demo.datasets_examples.pre_process_example import pre_process_dataset
 from hf_libraries_demo.evaluation.multi_metric_evaluation import MyMacroF1Metric
 
 if __name__ == '__main__':

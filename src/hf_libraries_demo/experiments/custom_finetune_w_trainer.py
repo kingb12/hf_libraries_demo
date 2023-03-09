@@ -11,7 +11,7 @@ from torch import Tensor
 from transformers import AutoConfig, BertTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer, \
     EvalPrediction
 
-from hf_libraries_demo.datasets.pre_process_example import pre_process_dataset
+from hf_libraries_demo.datasets_examples.pre_process_example import pre_process_dataset
 from hf_libraries_demo.evaluation.multi_metric_evaluation import MyMacroF1Metric
 from hf_libraries_demo.experiments.finetune_w_trainer import split_to_train_and_valid
 import torch.nn.functional as F

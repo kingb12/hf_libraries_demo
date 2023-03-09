@@ -32,11 +32,11 @@ different modules in `src`. You can also install it from the git link directly. 
 
 ## Using [Huggingface Datasets](https://huggingface.co/docs/datasets)
 
-[See this directory of examples](./src/hf_libraries_demo/datasets)
+[See this directory of examples](./src/hf_libraries_demo/datasets_examples)
 
-- Loading a dataset from Huggingface ([official tutorial](https://huggingface.co/docs/datasets/load_hub)) ([example](/src/hf_libraries_demo/datasets/load_dataset_example.py))
-- Using `map` and `filter` for pre-processing ([official tutorial](https://huggingface.co/docs/datasets/use_dataset)) ([example](/src/hf_libraries_demo/datasets/pre_process_example.py))
-- Aside: pre-modeling data analysis with datasets ([example](./src/hf_libraries_demo/datasets/data_analysis_example.py))
+- Loading a dataset from Huggingface ([official tutorial](https://huggingface.co/docs/datasets/load_hub)) ([example](/hf_libraries_demo/datasets_examples/load_dataset_example.py))
+- Using `map` and `filter` for pre-processing ([official tutorial](https://huggingface.co/docs/datasets/use_dataset)) ([example](/hf_libraries_demo/datasets_examples/pre_process_example.py))
+- Aside: pre-modeling data analysis with datasets ([example](src/hf_libraries_demo/datasets_examples/data_analysis_example.py))
 
 ## Setting up Evaluation w/ [Huggingface Evaluate](https://huggingface.co/docs/evaluate)
 
@@ -68,6 +68,14 @@ We'll use a fairly small pre-trained model:
 ([official docs](https://huggingface.co/docs/transformers/v4.26.0/en/main_classes/trainer#transformers.Trainer)) 
 ([example](./src/hf_libraries_demo/experiments/custom_finetune_w_trainer.py))
 
+## Efficient Inference
+- a worked example of translating `snli` to French, using T5, as in Quest 4 ([en_snli_to_french.py](./src/hf_libraries_demo/experiments/en_snli_to_french.py))
+  - filtering to only the unique English strings for translation
+  - Adding task prefixes with worker parallelism (`num_proc=32`)
+  - Batch tokenization with `max_length=512`
+  - Using a `torch` `DataLoader` with batch size 512 and `num_workers=8`
+  - batch decoding and storing of results
+  - building a `french_snli` from our map of unique EN -> FR translations
 
 ## Not Covered (Yet)
 - You can use both/either a sparse (BM25) and dense (FAISS) [Search index on a huggingface dataset](https://huggingface.co/docs/datasets/faiss_es) to **retrieve data points**.
