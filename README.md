@@ -77,6 +77,16 @@ We'll use a fairly small pre-trained model:
   - batch decoding and storing of results
   - building a `french_snli` from our map of unique EN -> FR translations
 
+## Modifying Generation/Decoding
+- some worked examples for generating text with T5 as an encoder-decoder are shown in 
+[generation_examples.py](./src/hf_libraries_demo/experiments/generation_examples.py)
+  - normal greedy decoding from T5
+  - normal sampling from T5
+  - adding a decoder prefix to T5 before decoding
+
+## Pre-training from Scratch
+- A complete example for pre-training RoBERTa from scratch with the BabyLM dataset can be found in [experiments/pretraining](./src/hf_libraries_demo/experiments/pretraining)
+
 ## Not Covered (Yet)
 - You can use both/either a sparse (BM25) and dense (FAISS) [Search index on a huggingface dataset](https://huggingface.co/docs/datasets/faiss_es) to **retrieve data points**.
   - great for retrieval-augmented generation or retrieval augmented in-context-learning
