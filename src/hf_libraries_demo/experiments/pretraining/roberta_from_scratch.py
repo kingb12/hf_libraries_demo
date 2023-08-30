@@ -155,7 +155,7 @@ if __name__ == '__main__':
         # For some reason, HF can't find my git lfs and thus can't push from within Trainer
         # push_to_hub=True,
         # push_to_hub_organization="Brendan",
-        # push_to_hub_model_id="my_roberta_bookcorpus",
+        # push_to_hub_model_id="my_roberta_babylm",
         load_best_model_at_end=True
     )
 
