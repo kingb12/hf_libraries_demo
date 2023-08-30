@@ -2,7 +2,7 @@
 
 This is a longer example, all contained in [`roberta_from_scratch.py`](roberta_from_scratch.py).
 
-**Goal:** pre-train a RoBERTa model from scratch, using `bookcorpus`.
+**Goal:** pre-train a RoBERTa model from scratch, using the [BabyLM dataset](https://babylm.github.io/), which I tokenized and uploaded to huggingface at [Brendan/babylm-processed](https://huggingface.co/datasets/Brendan/babylm-processed) 
 
 ## Training RoBERTa from scratch
 
