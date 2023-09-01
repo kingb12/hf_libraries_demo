@@ -1,7 +1,8 @@
-# NLP 244 Section: Huggingface Library Demos
+# Huggingface Library Demos
 
 This repo collects code examples and demos used for demonstrating different aspects of the Huggingface libraries, 
-including transformers, datasets, evaluate, and (eventually) more.
+including transformers, datasets, evaluate, and (eventually) more. Originally prepared for UCSC's NLP 244 Winter 2023 
+Course, expanding to include new examples.
 
 Be sure to check out Huggingface's [Course](https://huggingface.co/course/chapter1/1), for an in depth overview and 
 tutorial from HF.
