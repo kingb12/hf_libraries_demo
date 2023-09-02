@@ -87,6 +87,10 @@ We'll use a fairly small pre-trained model:
 ## Pre-training from Scratch
 - A complete example for pre-training RoBERTa from scratch with the BabyLM dataset can be found in [experiments/pretraining](./src/hf_libraries_demo/experiments/pretraining)
 
+## Fine-tuning a large model (15.5B parameters) with [Huggingface Peft](https://huggingface.co/docs/peft/index)
+
+An extended example of fine-tuning [bigcode/starcoder](https://huggingface.co/bigcode/starcoder)
+
 ## Not Covered (Yet)
 - You can use both/either a sparse (BM25) and dense (FAISS) [Search index on a huggingface dataset](https://huggingface.co/docs/datasets/faiss_es) to **retrieve data points**.
   - great for retrieval-augmented generation or retrieval augmented in-context-learning
