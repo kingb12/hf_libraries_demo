@@ -10,5 +10,17 @@ model on a single consumer GPU feasible. Additionally, it tunes the model in qua
 
 ![LoRA visual](https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/peft/lora_diagram.png)
 
-This example only runs for a few steps, and doesn't chooses optimal parameters. Later examples improve speed and 
+This example only runs for a few steps, and doesn't choose optimal parameters. Later examples improve speed and 
 performance.
+
+## Aside: Counting Achieved TFLOPs
+
+Trainer comes with many useful tools for evaluating how you can speed up training, such as GPU utilization and time 
+spent accessing memory, as well as total floating point operations in a training run. Here we add a simple metric 
+call-back for another derived metric: achieved TFLOPs. This will be the total floating point operations over total 
+run time. The closer we can get to the theoretical limits of the GPU, the better, though many factors will prevent us
+from achieving this.
+
+See [`./flops_counter.py`](flops_counter.py) for an example counter that will work with the Huggingface Trainer, its
+use in [`./base_with_tflops.py`](base_with_tflops.py), and recorded logs in W&B at 
+[kingb12/hf_libraries_demo_peft_example](https://wandb.ai/kingb12/hf_libraries_demo_peft_example)

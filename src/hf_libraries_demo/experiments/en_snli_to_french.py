@@ -70,4 +70,3 @@ if __name__ == '__main__':
 
     # push to hub
     dataset.push_to_hub("Brendan/nlp244_french_snli")
-
