@@ -43,10 +43,7 @@ RUN echo "User: ${USER}" && \
 
 # All users can use /home/${USER} as their home directory. Then, update permissions for .ssh to be more restrictive
 ENV HOME=/home/${USER}
-RUN mkdir $HOME/.cache $HOME/.config && \
-    chmod -R 755 $HOME && \
-    chmod -R 700 /home/${USER}/.ssh && \
-    chmod 644 /home/${USER}/.ssh/authorized_keys
+RUN mkdir $HOME/.cache $HOME/.config && chmod -R 755 $HOME
 
 
 # work from the home directory
