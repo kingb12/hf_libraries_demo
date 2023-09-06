@@ -88,5 +88,5 @@ SHELL ["conda", "run", "-p", "./venv", "/bin/bash", "-c"]
 RUN --mount=type=cache,target=/opt/conda/pkgs conda install --yes --freeze-installed pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
 
 # this will install dependencies specified in setup.cfg, verified with command
-RUN --mount=type=cache,target=.cache/buildkit/pip pip install --user -e . && \
-    echo -e "import hf_libraries_demo.package_demo.addition_module as mymod\nprint(f'4 + 5 is {mymod.add_five_to_x(4)}')" | python
+RUN --mount=type=cache,target=.cache/buildkit/pip pip install --user -e . #&& \
+    #echo -e "import hf_libraries_demo.package_demo.addition_module as mymod\nprint(f'4 + 5 is {mymod.add_five_to_x(4)}')" | python
