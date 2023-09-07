@@ -25,10 +25,12 @@ spec:
       - name: bking2-hf-libraries-demo
         image: kingb12/hf_libraries_demo:latest
         # Here I've added a secret for my weights and biases API key, so the job
-        # can create logs
+        # can create logs, and my huggingface API key, so I can download weights
         envFrom:
           - secretRef:
               name: bking2-wandb-api-key-71a5
+          - secretRef:
+              name: bking2-hf-api-token
         resources:
           limits:
             memory: 64Gi
