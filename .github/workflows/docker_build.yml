@@ -2,16 +2,9 @@ name: build
 
 on:
   push:
-    # below: trying to avoid builds for changes that don't affect the environment definition, since they are
-    # long-running & my GH Actions usage is limited. The repo is installed in edit mode in the container definition, but
-    # this means the experiment needs to clone the appropriate revision into place before starting, or it risks running
-    # stale code.
-    paths:
-      - 'k8s/Dockerfile'
-      - 'setup.cfg'
-      - 'pyproject.toml'
-      - '.github/workflows/docker_build.yml'
-
+    # Don't run if we didn't change any code or environment definitions
+    paths-ignore:
+      - '**/*.md'
 jobs:
   docker:
     runs-on: ubuntu-latest

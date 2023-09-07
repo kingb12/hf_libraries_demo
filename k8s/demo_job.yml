@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: Job
+# This is used for naming the job and pod, and letting other cluster/namespace users know I created it
+metadata:
+  generateName: bking2--hf-libraries-demo-
+  labels:
+    user: bking2
+    k8s-app: bking2-hf-libraries-demo
+spec:
+  template:
+    spec:
+      # Here is where we define the core parts of the job. We need 1) the Docker image 2) it's environment requirements
+      # (CPU/Memory/GPU) and 3) the command that gets run
+      containers:
+      - name: bking2-hf-libraries-demo
+        image: kingb12/hf_libraries_demo:latest
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: 1
+          requests:
+            memory: 1Gi
+            cpu: 1
+        command: [ "/bin/sh" ]
+        # everything after 'job ready to start' is the script we want to run. Using
+        # conda run --no-capture-output -p ./venv runs things with the correct conda environment
+        args:
+          - -c
+          - >-
+            cd /home/bking2/hf_libraries_demo &&
+            echo "job ready to start" &&
+            echo "import hf_libraries_demo.package_demo.addition_module as mymod\nprint(f'4 + 5 is {mymod.add_five_to_x(4)}')" > demo.py &&
+            conda run --no-capture-output -p ./venv python demo.py &&
+            echo "job complete!"
+      # some arguments needed by kubernetes, plus some useful defaults
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: { }
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      # tolerations are used to define what to do if the cluster isn't ready, can't be reached, etc. Other tolerations
+      # can be used to define what to do when resources are inadequate for our requests/limits
+      tolerations:
+      - effect: NoExecute
+        key: node.kubernetes.io/not-ready
+        operator: Exists
+        tolerationSeconds: 300
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 300
