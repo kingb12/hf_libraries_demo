@@ -7,9 +7,8 @@ import os
 import wandb
 from datasets import load_dataset, Dataset, DatasetDict
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, DataCollatorWithPadding, PreTrainedTokenizer
+from transformers import AutoModelForCausalLM, Trainer, GPT2TokenizerFast
 from transformers import TrainingArguments
-from transformers.utils import PaddingStrategy
 
 from hf_libraries_demo.experiments.peft.flops_counter import TFLOPSCallback
 from hf_libraries_demo.experiments.peft.utils import SavePeftModelCallback, LoadBestPeftModelCallback, \
@@ -35,7 +34,7 @@ if __name__ == "__main__":
     )
 
     # setup the tokenizer and tokenizer, ignore padding/truncation for now since we're using batch size 1
-    tokenizer: PreTrainedTokenizer = PreTrainedTokenizer.from_pretrained("bigcode/starcoder", use_auth_token=True)
+    tokenizer: GPT2TokenizerFast = GPT2TokenizerFast.from_pretrained("bigcode/starcoder", use_auth_token=True)
 
     # for whatever reason, starcoder's tokenizer doesn't specify its pad token, and if we don't set it, then when we go
     # to pad batches in the data collator (DataCollatorWithPadding, default from Trainer) it breaks. Setting here for

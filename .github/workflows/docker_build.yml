@@ -4,7 +4,8 @@ on:
   push:
     # Don't run if we didn't change any code or environment definitions
     paths-ignore:
-      - '**/*.md'
+      - '**/*.md'  # ignore docs updates
+      - 'k8s/**/*.yml'  # ignore changes to job definitions
 jobs:
   docker:
     runs-on: ubuntu-latest
