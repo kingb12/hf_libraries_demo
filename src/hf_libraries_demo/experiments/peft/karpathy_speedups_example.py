@@ -110,6 +110,7 @@ if __name__ == "__main__":
         args=training_args,
         train_dataset=tokenized_dataset['train'],
         eval_dataset=tokenized_dataset['test'],
+        tokenizer=tokenizer,  # give it the tokenizer so it can pad batches for us
         # these are defined in utils.py, and are convenience methods for saving and loading peft models without
         # saving/loading the large model over again
         callbacks=[

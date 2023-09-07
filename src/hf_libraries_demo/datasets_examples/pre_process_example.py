@@ -1,7 +1,7 @@
-from typing import Any, Dict, Callable
+from typing import Any, Dict, Callable, Union
 
 # Just a place-holder type hint to label a data point in a dataset, e.g. train_dataset[0]
-from datasets import DatasetDict, load_dataset
+from datasets import DatasetDict, load_dataset, Dataset
 
 DataPoint = Dict[str, Any]
 
