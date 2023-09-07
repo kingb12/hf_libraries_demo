@@ -7,8 +7,9 @@ import os
 import wandb
 from datasets import load_dataset, Dataset, DatasetDict
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer
+from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, DataCollatorWithPadding, PreTrainedTokenizer
 from transformers import TrainingArguments
+from transformers.utils import PaddingStrategy
 
 from hf_libraries_demo.experiments.peft.flops_counter import TFLOPSCallback
 from hf_libraries_demo.experiments.peft.utils import SavePeftModelCallback, LoadBestPeftModelCallback, \
@@ -34,7 +35,13 @@ if __name__ == "__main__":
     )
 
     # setup the tokenizer and tokenizer, ignore padding/truncation for now since we're using batch size 1
-    tokenizer = AutoTokenizer.from_pretrained("bigcode/starcoder", use_auth_token=True)
+    tokenizer: PreTrainedTokenizer = PreTrainedTokenizer.from_pretrained("bigcode/starcoder", use_auth_token=True)
+
+    # for whatever reason, starcoder's tokenizer doesn't specify its pad token, and if we don't set it, then when we go
+    # to pad batches in the data collator (DataCollatorWithPadding, default from Trainer) it breaks. Setting here for
+    # use anywhere we pad. See: https://huggingface.co/bigcode/starcoder/discussions/67
+    tokenizer.pad_token = tokenizer.eos_token
+
     tokenized_dataset = split_dataset.map(lambda batch: tokenizer(batch['text']), batched=True)
 
     # set the labels to the inputs. In this case, the MODEL will know to do appropriate shifting for Causal LM
@@ -100,7 +107,6 @@ if __name__ == "__main__":
         dataloader_pin_memory=args.pin_memory
     )
 
-
     # Create a TFLOPs Callback which logs to wandb
     tflops_callback: TFLOPSCallback = TFLOPSCallback(logging_callback=wandb.log)
 
@@ -110,7 +116,7 @@ if __name__ == "__main__":
         args=training_args,
         train_dataset=tokenized_dataset['train'],
         eval_dataset=tokenized_dataset['test'],
-        tokenizer=tokenizer,  # give it the tokenizer so it can pad batches for us
+        tokenizer=tokenizer,
         # these are defined in utils.py, and are convenience methods for saving and loading peft models without
         # saving/loading the large model over again
         callbacks=[
