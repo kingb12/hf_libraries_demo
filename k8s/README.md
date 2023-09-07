@@ -32,5 +32,8 @@ This includes a few new additions:
 - [Increasing our CPU/Memory requests](./peft/starcoder_base_example.yml#L32-L40) and specifying we need 1 GPU (affinity handles type)
 - [Adjusting command executed](./peft/starcoder_base_example.yml#L50-L53) to log in to huggingface and set its cache directories to a path on a mounted volume. This allows re-use
 of downloaded weights and datasets on subsequent job runs.
-- mounting the volume mentioned above (`volumeMounts`)
-- [A toleration](./peft/starcoder_base_example.yml#27) which prevents the job from running if no A100s are available yet
+- [mounting the volume](./peft/starcoder_base_example.yml#L86-L89) mentioned above (`volumeMounts`)
+- [A toleration](./peft/starcoder_base_example.yml#L80-L82) which prevents the job from running if no A100s are available yet.
+
+Execute the job via `kubectl create -f k8s/peft/starcoder_base_example.yml`. This may require adaptation for your
+k8s environment.
