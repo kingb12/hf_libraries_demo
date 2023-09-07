@@ -17,8 +17,8 @@ performance.
 
 Trainer comes with many useful tools for evaluating how you can speed up training, such as GPU utilization and time 
 spent accessing memory, as well as total floating point operations in a training run. Here we add a simple metric 
-call-back for another derived metric: achieved TFLOPs. This will be the total floating point operations over total 
-run time. The closer we can get to the theoretical limits of the GPU, the better, though many factors will prevent us
+call-back for another derived metric: achieved TFLOPs (in training). This will be the total floating point operations over total 
+time spent in training steps. The closer we can get to the theoretical limits of the GPU, the better, though many factors will prevent us
 from achieving this.
 
 See [`./flops_counter.py`](flops_counter.py) for an example counter that will work with the Huggingface Trainer, its
