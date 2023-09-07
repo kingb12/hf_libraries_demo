@@ -26,11 +26,11 @@ In [peft/starcoder_base_example.yml](./peft/starcoder_base_example.yml), I creat
 can be used to run the base peft example I created (with TFLOPs calculation) at 
 [src/hf_libraries_demo/experiments/peft/base_with_tflops.py](../src/hf_libraries_demo/experiments/peft/base_with_tflops.py).
 This includes a few new additions:
-- [Specifying an affinity for nodes with A100s](./peft/starcoder_base_example.yml#L14)
-- [Pulling the W&B API Key from a secret](./peft/starcoder_base_example.yml#27)
+- [Specifying an affinity for nodes with A100s](./peft/starcoder_base_example.yml#L14-L21)
+- [Pulling the W&B API Key from a secret](./peft/starcoder_base_example.yml#L27-L31)
   - Creation of secret not shown, but some [more info here](https://kubernetes.io/docs/concepts/configuration/secret/). I use [Lens](https://k8slens.dev/) to make some of this easier, but it is not particularly light-weight
-- Increasing our CPU/Memory requests and specifying we need 1 GPU (affinity handles type)
-- Adjusting command executed to log in to huggingface and set its cache directories to a path on a mounted volume. This allows re-use
+- [Increasing our CPU/Memory requests](./peft/starcoder_base_example.yml#L32-L40) and specifying we need 1 GPU (affinity handles type)
+- [Adjusting command executed](./peft/starcoder_base_example.yml#L50-L53) to log in to huggingface and set its cache directories to a path on a mounted volume. This allows re-use
 of downloaded weights and datasets on subsequent job runs.
 - mounting the volume mentioned above (`volumeMounts`)
 - [A toleration](./peft/starcoder_base_example.yml#27) which prevents the job from running if no A100s are available yet
