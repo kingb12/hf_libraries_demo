@@ -2,6 +2,7 @@
 Re-writing this training example outside the Trainer API, to see if it has overhead contributing to our training time
 """
 import argparse
+import os
 import time
 from typing import List, Dict, Any, Union
 
@@ -9,15 +10,15 @@ import torch
 import wandb
 from datasets import load_dataset, Dataset, DatasetDict
 from peft import LoraConfig, prepare_model_for_kbit_training, get_peft_model
-from torch import nn, Tensor
+from torch import nn
 from torch.optim import AdamW, Optimizer
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, get_cosine_schedule_with_warmup, GPT2TokenizerFast
 from transformers.pytorch_utils import ALL_LAYERNORM_LAYERS
 from transformers.trainer_pt_utils import get_parameter_names
-from transformers.utils import PaddingStrategy
 
+from hf_libraries_demo.experiments.peft.collator_with_padding import InputAndLabelCollatorWithPadding
 from hf_libraries_demo.experiments.peft.utils import print_trainable_parameters
 
 
@@ -146,13 +147,13 @@ class SimpleTrainer:
                 # Logging to wandb
                 if step % self.logging_steps == 0:
                     print(f"Training {step}/{self.max_train_steps}: loss={loss}, seq_length={seq_length}")
-                    wandb.log({"train/loss": loss})
+                    wandb.log({"train/loss": loss, "train/global_step": step})
 
                 # Evaluation
                 if step % self.eval_steps == 0:
                     eval_loss = self.evaluate()
                     print(f"Evaluation Loss {step}/{self.max_train_steps}: loss={eval_loss}")
-                    wandb.log({"eval/loss": eval_loss})
+                    wandb.log({"eval/loss": eval_loss, "train/global_step": step})
 
                 # increment step
                 step += 1
@@ -165,7 +166,8 @@ class SimpleTrainer:
         wandb.log({
             "train/my_samples_per_second": num_training_samples / self.time_in_train_step,
             "train/my_steps_per_second": self.max_train_steps / self.time_in_train_step,
-            "train/achieved_tflops": (self.train_flos / self.time_in_train_step) / 1e12
+            "train/achieved_tflops": (self.train_flos / self.time_in_train_step) / 1e12,
+            "train/global_step": step
         })
 
 
@@ -197,7 +199,21 @@ if __name__ == "__main__":
     # use anywhere we pad. See: https://huggingface.co/bigcode/starcoder/discussions/67
     tokenizer.pad_token = tokenizer.eos_token
 
+    tokenized_dataset = split_dataset.map(lambda batch: tokenizer(batch['text']), batched=True)
+
+    # This added 'input_ids' and 'attention_mask' (all ones until we pad batches). These sequences don't have EOS
+    # token appended though, so they are appropriate for a call to generate. We are training with full completions
+    # though, so we can add the eos token back to train the model to generate it when appropriate.
+    tokenized_dataset = tokenized_dataset.map(lambda item: {
+        "input_ids": item['input_ids'] + [tokenizer.eos_token_id],
+        "attention_mask": item['attention_mask'] + [1],
+    })
+
+    # set the labels to the inputs. In this case, the MODEL will know to do appropriate shifting for Causal LM
+    tokenized_dataset = tokenized_dataset.map(lambda batch: {'labels': batch['input_ids']}, batched=True)
+
     model = AutoModelForCausalLM.from_pretrained(
+        # "bigcode/starcoderbase-1b",  # useful to debug on a smaller model for faster initialization times
         "bigcode/starcoder",
         use_auth_token=True,
         use_cache=True,
@@ -238,20 +254,14 @@ if __name__ == "__main__":
     optimizer = get_optimizer(model, weight_decay=0.05, optimizer_class=AdamW)
     scheduler = get_cosine_schedule_with_warmup(optimizer, num_warmup_steps=100, num_training_steps=num_training_steps)
 
-    def collate_batch(inputs: Dict[str, List[Any]]) -> Dict[str, Tensor]:
-        result = tokenizer(inputs,
-                           batched=True,
-                           padding=PaddingStrategy.LONGEST,
-                           return_tensors="pt"
-                           )
-        return result
-
-    train_dataloader = DataLoader(split_dataset['train'], batch_size=args.batch_size, shuffle=True,
+    collator: InputAndLabelCollatorWithPadding = InputAndLabelCollatorWithPadding(tokenizer)
+    tokenized_dataset.set_format("pt", columns=["input_ids", "attention_mask", "labels"])
+    train_dataloader = DataLoader(tokenized_dataset['train'], batch_size=args.batch_size, shuffle=True,
                                   num_workers=args.num_workers, pin_memory=args.pin_memory,
-                                  collate_fn=collate_batch)
-    eval_dataloader = DataLoader(split_dataset['test'], batch_size=args.batch_size, num_workers=args.num_workers,
+                                  collate_fn=collator)
+    eval_dataloader = DataLoader(tokenized_dataset['test'], batch_size=args.batch_size, num_workers=args.num_workers,
                                  pin_memory=args.pin_memory,
-                                 collate_fn=collate_batch)
+                                 collate_fn=collator)
 
     # put the model on the GPU
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

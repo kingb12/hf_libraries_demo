@@ -10,6 +10,7 @@ from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoModelForCausalLM, Trainer, GPT2TokenizerFast
 from transformers import TrainingArguments
 
+from hf_libraries_demo.experiments.peft.collator_with_padding import InputAndLabelCollatorWithPadding
 from hf_libraries_demo.experiments.peft.flops_counter import TFLOPSCallback
 from hf_libraries_demo.experiments.peft.utils import SavePeftModelCallback, LoadBestPeftModelCallback, \
     print_trainable_parameters
@@ -18,13 +19,14 @@ if __name__ == "__main__":
     # parse arguments
     parser = argparse.ArgumentParser(description="Training arguments parser")
     parser.add_argument('--batch_size', type=int, default=1, help='Batch size for training (default: 1)')
-    parser.add_argument('--num_workers', type=int, default=8, help='Number of workers for data loading (default: 8)')
+    parser.add_argument('--num_workers', type=int, default=4, help='Number of workers for data loading (default: 8)')
     parser.add_argument('--pin_memory', action='store_true', default=True,
                         help='Use pinned (page-locked) memory. If not set, defaults to True.')
     args = parser.parse_args()
 
     # Load the  and process dataset. Added more training data points to get a more complete test.
-    full_dataset: Dataset = load_dataset("HuggingFaceH4/CodeAlpaca_20K", split=f"train[0:{128*10}]", use_auth_token=True)
+    full_dataset: Dataset = load_dataset("HuggingFaceH4/CodeAlpaca_20K", split=f"train[0:{128 * 10}]",
+                                         use_auth_token=True)
     split_dataset: DatasetDict = full_dataset.train_test_split(test_size=0.1)
 
     # take each prompt and completion and form a single text with a 'Question' and 'Answer', drop existing columns
@@ -43,10 +45,19 @@ if __name__ == "__main__":
 
     tokenized_dataset = split_dataset.map(lambda batch: tokenizer(batch['text']), batched=True)
 
+    # This added 'input_ids' and 'attention_mask' (all ones until we pad batches). These sequences don't have EOS
+    # token appended though, so they are appropriate for a call to generate. We are training with full completions
+    # though, so we can add the eos token back to train the model to generate it when appropriate.
+    tokenized_dataset = tokenized_dataset.map(lambda item: {
+        "input_ids": item['input_ids'] + [tokenizer.eos_token_id],
+        "attention_mask": item['attention_mask'] + [1],
+    })
+
     # set the labels to the inputs. In this case, the MODEL will know to do appropriate shifting for Causal LM
     tokenized_dataset = tokenized_dataset.map(lambda batch: {'labels': batch['input_ids']}, batched=True)
 
     model = AutoModelForCausalLM.from_pretrained(
+        # "bigcode/starcoderbase-1b",  # useful to debug on a smaller model for faster initialization times
         "bigcode/starcoder",
         use_auth_token=True,
         use_cache=True,
@@ -116,6 +127,7 @@ if __name__ == "__main__":
         train_dataset=tokenized_dataset['train'],
         eval_dataset=tokenized_dataset['test'],
         tokenizer=tokenizer,
+        data_collator=InputAndLabelCollatorWithPadding(tokenizer),
         # these are defined in utils.py, and are convenience methods for saving and loading peft models without
         # saving/loading the large model over again
         callbacks=[
