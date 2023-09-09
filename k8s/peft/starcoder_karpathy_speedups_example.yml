@@ -1,0 +1,95 @@
+apiVersion: batch/v1
+kind: Job
+# This is used for naming the job and pod, and letting other cluster/namespace users know I created it
+metadata:
+  generateName: bking2--hf-libraries-demo-
+  labels:
+    user: bking2
+    k8s-app: bking2-hf-libraries-demo
+spec:
+  template:
+    spec:
+      # Here we additionally specify that we need our pod (created by the job) to attach to a node with an A100
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.product
+                operator: In
+                values:
+                - NVIDIA-A100-SXM4-80GB
+      # Here is where we define the core parts of the job. We need 1) the Docker image 2) it's environment requirements
+      # (CPU/Memory/GPU) and 3) the command that gets run
+      containers:
+      - name: bking2-hf-libraries-demo
+        image: kingb12/hf_libraries_demo:latest
+        # Here I've added a secret for my weights and biases API key, so the job
+        # can create logs, and my huggingface API key, so I can download weights
+        envFrom:
+          - secretRef:
+              name: bking2-wandb-api-key-71a5
+          - secretRef:
+              name: bking2-hf-api-token
+        resources:
+          limits:
+            memory: 256Gi
+            cpu: 32
+            nvidia.com/gpu: "1"
+          requests:
+            memory: 128Gi
+            cpu: 16
+            nvidia.com/gpu: "1"
+        command: [ "/bin/sh" ]
+        # This includes further setup to 1) cache transformers and datasets on my volume so weights don't need to be
+        # re-downloaded on each run and 2) log in to huggingface since Starcoder is agreement protected.
+        # everything after 'job ready to start' is the script we want to run. Using
+        # conda run --no-capture-output -p ./venv runs things with the correct conda environment
+
+        # Note: rather than clone this job over different arguments to batch size, I just modified them here as I created
+        # things.
+        args:
+          - -c
+          - >-
+            cd /home/bking2/hf_libraries_demo &&
+            export TRANSFORMERS_CACHE=/data/users/bking2/.cache/huggingface && 
+            export HF_HOME=/data/users/bking2/.cache/huggingface &&
+            pip install huggingface_hub &&
+            python -c "from huggingface_hub.hf_api import HfFolder; HfFolder.save_token('${HF_API_TOKEN}')" &&
+            echo "job ready to start" &&
+            export TOKENIZERS_PARALLELISM=true &&
+            conda run --no-capture-output -p ./venv python src/hf_libraries_demo/experiments/peft/karpathy_speedups_example.py --batch_size 32 &&
+            echo "job complete!"
+      # some arguments needed by kubernetes, plus some useful defaults
+        volumeMounts:
+        - mountPath: /data/users/bking2
+          name: bking2-data-volume
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      # tolerations are used to define what to do if the cluster isn't ready, can't be reached, etc. Other tolerations
+      # can be used to define what to do when resources are inadequate for our requests/limits
+      tolerations:
+      - effect: NoExecute
+        key: node.kubernetes.io/not-ready
+        operator: Exists
+        tolerationSeconds: 300
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 300
+      # We add a toleration telling k8s not to schedule our job if no A100s are available yet
+      - effect: PreferNoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
+      # here we specify the data volume as well. So far, I just use this for caching transformer/dataset weights
+      # See https://ucsd-prp.gitlab.io/userdocs/tutorial/storage/ for info on creating a data volume to mount to like
+      # this (pre-requisite to mounting as in this job, not shown in repo)
+      volumes:
+        - name: bking2-data-volume
+          persistentVolumeClaim:
+            claimName: bking2-data-volume
+  backoffLimit: 0

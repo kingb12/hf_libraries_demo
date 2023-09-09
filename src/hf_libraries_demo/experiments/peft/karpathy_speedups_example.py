@@ -48,6 +48,7 @@ if __name__ == "__main__":
     # This added 'input_ids' and 'attention_mask' (all ones until we pad batches). These sequences don't have EOS
     # token appended though, so they are appropriate for a call to generate. We are training with full completions
     # though, so we can add the eos token back to train the model to generate it when appropriate.
+    # See https://github.com/huggingface/transformers/issues/3311 for details (Starcoder uses GPT2TokenizerFast)
     tokenized_dataset = tokenized_dataset.map(lambda item: {
         "input_ids": item['input_ids'] + [tokenizer.eos_token_id],
         "attention_mask": item['attention_mask'] + [1],
