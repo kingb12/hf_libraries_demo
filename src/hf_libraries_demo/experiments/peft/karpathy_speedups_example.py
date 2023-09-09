@@ -22,6 +22,8 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers', type=int, default=4, help='Number of workers for data loading (default: 8)')
     parser.add_argument('--pin_memory', action='store_true', default=True,
                         help='Use pinned (page-locked) memory. If not set, defaults to True.')
+    parser.add_argument('--max_train_steps', type=int, default=32,
+                        help='number of training steps to take')
     args = parser.parse_args()
 
     # Load the  and process dataset. Added more training data points to get a more complete test.
@@ -99,7 +101,7 @@ if __name__ == "__main__":
         evaluation_strategy="steps",
         save_strategy="steps",
         load_best_model_at_end=True,
-        max_steps=32,
+        max_steps=args.max_train_steps,
         eval_steps=16,
         save_steps=16,
         logging_steps=1,

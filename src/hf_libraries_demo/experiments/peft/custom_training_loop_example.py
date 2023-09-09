@@ -178,6 +178,8 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers', type=int, default=4, help='Number of workers for data loading (default: 8)')
     parser.add_argument('--pin_memory', action='store_true', default=True,
                         help='Use pinned (page-locked) memory. If not set, defaults to True.')
+    parser.add_argument('--max_train_steps', type=int, default=32,
+                        help='number of training steps to take')
     args = parser.parse_args()
 
     # Load the  and process dataset. Added more training data points to get a more complete test.
@@ -249,7 +251,7 @@ if __name__ == "__main__":
 
     # ============== Start of code changes: implementing our own training loop ========================================
 
-    num_training_steps: int = 32
+    num_training_steps: int = args.max_train_steps
 
     # Setup optimizer and scheduler
     optimizer = get_optimizer(model, weight_decay=0.05, optimizer_class=AdamW)
