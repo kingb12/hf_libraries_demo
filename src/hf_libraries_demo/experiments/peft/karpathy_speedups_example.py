@@ -22,6 +22,8 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers', type=int, default=4, help='Number of workers for data loading (default: 8)')
     parser.add_argument('--pin_memory', action='store_true', default=True,
                         help='Use pinned (page-locked) memory. If not set, defaults to True.')
+    parser.add_argument('--memory_metrics', action='store_true', default=False,
+                        help='whether the trainer should record memory metrics, defaults to False as it is slow')
     parser.add_argument('--max_train_steps', type=int, default=32,
                         help='number of training steps to take')
     args = parser.parse_args()
@@ -114,7 +116,7 @@ if __name__ == "__main__":
         fp16=True,
         weight_decay=0.05,
         report_to="wandb",
-        skip_memory_metrics=False,
+        skip_memory_metrics=not args.memory_metrics,
         # implementing @karpathy's simple speed-ups for the dataloader. If using k8s, make sure cpu requests > this val
         dataloader_num_workers=args.num_workers,
         dataloader_pin_memory=args.pin_memory
