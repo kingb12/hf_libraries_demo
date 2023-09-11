@@ -111,10 +111,10 @@ if __name__ == "__main__":
         learning_rate=5e-6,
         lr_scheduler_type="cosine",
         warmup_steps=100,
-        gradient_accumulation_steps=4,  # our effective batch size will be 4 as a result
         fp16=True,
         weight_decay=0.05,
         report_to="wandb",
+        skip_memory_metrics=False,
         # implementing @karpathy's simple speed-ups for the dataloader. If using k8s, make sure cpu requests > this val
         dataloader_num_workers=args.num_workers,
         dataloader_pin_memory=args.pin_memory
