@@ -58,7 +58,7 @@ spec:
             python -c "from huggingface_hub.hf_api import HfFolder; HfFolder.save_token('${HF_API_TOKEN}')" &&
             echo "job ready to start" &&
             export TOKENIZERS_PARALLELISM=true &&
-            conda run --no-capture-output -p ./venv python src/hf_libraries_demo/experiments/peft/custom_training_loop_example.py --batch_size 4 &&
+            conda run --no-capture-output -p ./venv python src/hf_libraries_demo/experiments/peft/custom_training_loop_example.py --batch_size 2 --max_train_steps 256 &&
             echo "job complete!"
       # some arguments needed by kubernetes, plus some useful defaults
         volumeMounts:

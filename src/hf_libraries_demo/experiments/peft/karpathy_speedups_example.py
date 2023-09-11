@@ -104,7 +104,7 @@ if __name__ == "__main__":
         save_strategy="steps",
         load_best_model_at_end=True,
         max_steps=args.max_train_steps,
-        eval_steps=16,
+        eval_steps=args.max_train_steps // 2,
         save_steps=16,
         logging_steps=1,
         # We're optimizing training speed but in a real setup you can increase eval batch size beyond train batch size
