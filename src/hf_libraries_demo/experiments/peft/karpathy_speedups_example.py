@@ -19,6 +19,7 @@ if __name__ == "__main__":
     # parse arguments
     parser = argparse.ArgumentParser(description="Training arguments parser")
     parser.add_argument('--batch_size', type=int, default=1, help='Batch size for training (default: 1)')
+    parser.add_argument('--grad_steps', type=int, default=1, help='Gradient accumulation steps (default: 1)')
     parser.add_argument('--num_workers', type=int, default=4, help='Number of workers for data loading (default: 8)')
     parser.add_argument('--pin_memory', action='store_true', default=True,
                         help='Use pinned (page-locked) memory. If not set, defaults to True.')
@@ -106,6 +107,7 @@ if __name__ == "__main__":
         max_steps=args.max_train_steps,
         eval_steps=args.max_train_steps // 2,
         save_steps=args.max_train_steps // 2,
+        gradient_accumulation_steps=args.grad_steps,
         logging_steps=1,
         # We're optimizing training speed but in a real setup you can increase eval batch size beyond train batch size
         per_device_train_batch_size=args.batch_size,
